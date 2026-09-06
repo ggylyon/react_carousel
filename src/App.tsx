@@ -24,13 +24,25 @@ class App extends React.Component<{}, State> {
 
   render() {
     const { images } = this.state;
+    const step = 3;
+    const frameSize = 3;
+    const itemWidth = 130;
+    const animationDuration = 1000;
+    const infinite = false;
 
     return (
       <div className="App">
         {/* eslint-disable-next-line */}
-        <h1>Carousel with {images.length} images</h1>
+        <h1 data-cy="title">Carousel with {images.length} images</h1>
 
-        <Carousel />
+        <Carousel
+          images={images}
+          defaultStep={step}
+          defaultFrameSize={frameSize}
+          defaultItemWidth={itemWidth}
+          defaultAnimationDuration={animationDuration}
+          infinite={infinite}
+        />
       </div>
     );
   }
