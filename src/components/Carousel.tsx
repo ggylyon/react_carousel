@@ -3,42 +3,48 @@ import './Carousel.scss';
 
 interface Props {
   images: string[];
-  defaultStep?: number;
-  defaultFrameSize?: number;
-  defaultItemWidth?: number;
-  defaultAnimationDuration?: number;
-  infinite?: false;
+  step?: number;
+  frameSize?: number;
+  itemWidth?: number;
+  animationDuration?: number;
+  infinite?: boolean;
 }
 
 const Carousel: React.FC<Props> = ({
   images,
-  defaultStep = 3,
-  defaultFrameSize = 3,
-  defaultItemWidth = 130,
-  defaultAnimationDuration = 1000,
+  step = 3,
+  frameSize = 3,
+  itemWidth = 130,
+  animationDuration = 1000,
   infinite = false,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [step, setStep] = useState(defaultStep);
-  const [frameSize, setFrameSize] = useState(defaultFrameSize);
-  const [itemWidth, setItemWidth] = useState(defaultItemWidth);
-  const [animationDuration, setAnimationDuration] = useState(
-    defaultAnimationDuration,
-  );
+  const [updatedStep, setUpdatedStep] = useState(step);
+  const [updatedFrameSize, setUpdatedFrameSize] = useState(frameSize);
+  const [updatedItemWidth, setUpdatedItemWidth] = useState(itemWidth);
+  const [updatedAnimationDuration, setUpdatedAnimationDuration] =
+    useState(animationDuration);
 
   return (
-    <div className="Carousel" style={{ width: `${itemWidth * frameSize}px` }}>
+    <div
+      className="Carousel"
+      style={{ width: `${updatedItemWidth * updatedFrameSize}px` }}
+    >
       <ul className="Carousel__list">
         {images.map((image: string, index: number) => {
           return (
             <li
               key={image}
               style={{
-                transform: `translateX(-${currentSlide * 100}%)`,
-                transition: `${animationDuration}ms`,
+                transform: `translateX(-${currentSlide * updatedItemWidth}px)`,
+                transition: `${updatedAnimationDuration}ms`,
               }}
             >
-              <img src={image} alt={String(index + 1)} width={`${itemWidth}`} />
+              <img
+                src={image}
+                alt={String(index + 1)}
+                width={`${updatedItemWidth}`}
+              />
             </li>
           );
         })}
@@ -48,18 +54,18 @@ const Carousel: React.FC<Props> = ({
         type="button"
         onClick={() => {
           if (currentSlide === 0 && infinite) {
-            setCurrentSlide(images.length - frameSize);
+            setCurrentSlide(images.length - updatedFrameSize);
 
             return;
           }
 
-          if (currentSlide - step < 0) {
+          if (currentSlide - updatedStep < 0) {
             setCurrentSlide(0);
 
             return;
           }
 
-          setCurrentSlide(currentSlide - step);
+          setCurrentSlide(currentSlide - updatedStep);
         }}
         data-cy="prev"
       >
@@ -68,60 +74,60 @@ const Carousel: React.FC<Props> = ({
       <button
         type="button"
         onClick={() => {
-          if (currentSlide >= images.length - frameSize && infinite) {
+          if (currentSlide >= images.length - updatedFrameSize && infinite) {
             setCurrentSlide(0);
 
             return;
           }
 
-          if (currentSlide + frameSize + step >= images.length) {
-            setCurrentSlide(images.length - frameSize);
+          if (currentSlide + updatedFrameSize + updatedStep >= images.length) {
+            setCurrentSlide(images.length - updatedFrameSize);
 
             return;
           }
 
-          setCurrentSlide(currentSlide + step);
+          setCurrentSlide(currentSlide + updatedStep);
         }}
         data-cy="next"
       >
         Next
       </button>
 
-      <label htmlFor="stepId">Step: {step}</label>
+      <label htmlFor="stepId">Step: {updatedStep}</label>
       <input
         type="text"
         name="step"
-        onChange={e => setStep(Number(e.target.value))}
+        onChange={e => setUpdatedStep(Number(e.target.value))}
         placeholder="Step"
         id="stepId"
       />
 
-      <label htmlFor="frameId">Frame Size: {frameSize}</label>
+      <label htmlFor="frameId">Frame Size: {updatedFrameSize}</label>
       <input
         type="text"
         name="frameSize"
-        onChange={e => setFrameSize(Number(e.target.value))}
+        onChange={e => setUpdatedFrameSize(Number(e.target.value))}
         placeholder="Frame size"
         id="frameId"
       />
 
-      <label htmlFor="itemId">Item Width: {itemWidth}px</label>
+      <label htmlFor="itemId">Item Width: {updatedItemWidth}px</label>
       <input
         type="text"
         name="itemWidth"
-        onChange={e => setItemWidth(Number(e.target.value))}
+        onChange={e => setUpdatedItemWidth(Number(e.target.value))}
         placeholder="Item width"
         id="itemId"
       />
 
       <label htmlFor="animationDurationId">
-        Animation Duration: {animationDuration}ms
+        Animation Duration: {updatedAnimationDuration}ms
       </label>
 
       <input
         type="text"
-        name="animationDuration"
-        onChange={e => setAnimationDuration(Number(e.target.value))}
+        name="fnimationDuration"
+        onChange={e => setUpdatedAnimationDuration(Number(e.target.value))}
         placeholder="Animation Duration"
         id="animationDurationId"
       />
